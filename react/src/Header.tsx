@@ -5,7 +5,7 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import GitHubIcon from "@material-ui/icons/GitHub";
+import PersonIcon from "@material-ui/icons/Person";
 import React from "react";
 import { Link } from "react-router-dom";
 import { PostsContext } from "./Context";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
-    githubButton: {
+    personButton: {
       color: "black",
     },
     menuButton: {
@@ -49,17 +49,17 @@ export default function Header() {
             </IconButton>
             <Typography variant="h6" className={classes.title}>
               <Link className={classes.title} to="/">
-                Naperg
+                ...
               </Link>
             </Typography>
-            <a href="https://github.com/alan345/naperg">
+            <a href="/">
               <IconButton
                 edge="start"
-                className={classes.githubButton}
+                className={classes.personButton}
                 color="inherit"
                 aria-label="menu"
               >
-                <GitHubIcon />
+                <PersonIcon />
               </IconButton>
             </a>
             {context.user.id ? (
