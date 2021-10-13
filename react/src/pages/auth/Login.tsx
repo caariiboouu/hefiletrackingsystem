@@ -6,6 +6,20 @@ import { PostsContext } from "../../Context";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+import { useFormik } from 'formik';
+
+const validate = (values: { email: string; }) => {
+  const errors = { email: "" };
+
+  if (!values.email) {
+    errors.email = 'Required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address';
+  }
+
+  return errors;
+};
+
 const MUTATION = gql`
   mutation LoginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {
@@ -19,6 +33,17 @@ const MUTATION = gql`
   }
 `;
 const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+    },
+    validate,
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
   const history = useHistory();
   const context = React.useContext(PostsContext);
   const [message, setMessage] = React.useState("");
@@ -54,39 +79,41 @@ const Login = () => {
     }
   };
   return (
-    <>
-      <h3>Login</h3>
+    <form onSubmit={formik.handleSubmit}>
+      <>
+        <h3>Login</h3>
 
-      <div>
-        <TextField
-          id="email"
-          label="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div>
-        <TextField
-          id="password"
-          label="password"
-          type={"password"}
-          onKeyPress={handleKeyPress}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div style={{ height: "15px" }} />
-      <div>
-        <Button variant={"outlined"} color={"primary"} onClick={loginF}>
-          Login
-        </Button>
-      </div>
+        <div>
+          <TextField
+            id="email"
+            label="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            id="password"
+            label="password"
+            type={"password"}
+            onKeyPress={handleKeyPress}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div style={{ height: "15px" }} />
+        <div>
+          <Button variant={"outlined"} color={"primary"} onClick={loginF}>
+            Login
+          </Button>
+        </div>
 
-      <div>
-        <Link to={"/forgetPassword"}>Forget Password?</Link>
-      </div>
-      <Typography color={"secondary"}>{message}</Typography>
-    </>
+        <div>
+          <Link to={"/forgetPassword"}>Forget Password?</Link>
+        </div>
+        <Typography color={"secondary"}>{message}</Typography>
+      </>
+    </form>
   );
 };
 export default Login;
