@@ -35,8 +35,6 @@ const MUTATION = gql`
 const Login = () => {
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
       email: '',
     },
     validate,
